@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">GLN</string>
+    <string name="email_hint_value">Email</string>
+    <string name="password_hint_value">Password</string>
+    <string name="login_text_value">Login</string>
+    <string name="report_text_value">Report</string>
+    <string name="logout_button">Logout</string>
+    <string name="ec_button">EC</string>
+</resources>
