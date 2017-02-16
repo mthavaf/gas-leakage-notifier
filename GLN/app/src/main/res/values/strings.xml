@@ -6,4 +6,10 @@
     <string name="report_text_value">Report</string>
     <string name="logout_button">Logout</string>
     <string name="ec_button">EC</string>
+    <string name="phone_number_1">Phone Number - 1</string>
+    <string-array name="drawer_items">
+        <item>Report</item>
+        <item>Emergency Contacts</item>
+        <item>Logout</item>
+    </string-array>
 </resources>

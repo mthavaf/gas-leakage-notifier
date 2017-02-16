@@ -15,8 +15,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Report" />
-        <activity android:name=".AddContacts"></activity>
+        <activity android:name=".LoggedIn"></activity>
     </application>
 
 </manifest>

@@ -46,14 +46,14 @@ public class MainActivity extends AppCompatActivity {
                         }catch (UnsupportedEncodingException e){
                             print(e.getMessage());
                         }
-                        Intent loggedIn = new Intent(MainActivity.this, Report.class);
+                        Intent loggedIn = new Intent(MainActivity.this, LoggedIn.class);
                         startActivity(loggedIn);
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         print("Failed");
-                        Intent loggedIn = new Intent(MainActivity.this, Report.class);
+                        Intent loggedIn = new Intent(MainActivity.this, LoggedIn.class);
                         startActivity(loggedIn);
                     }
                 });
@@ -73,5 +73,10 @@ public class MainActivity extends AppCompatActivity {
 
     void print(String s){
         Log.d(Gln.TAG, s);
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 }
