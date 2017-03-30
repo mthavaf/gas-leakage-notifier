@@ -16,6 +16,7 @@ def hello():
     resp = Response("hello")
     # resp.headers['Access-Control-Allow-Origin'] = '*'
     # return "<html><head><title>hi</title></head><body>hello</body></html>"
+    # comment
     return resp
 
 
