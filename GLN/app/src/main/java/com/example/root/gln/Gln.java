@@ -5,6 +5,6 @@ package com.example.root.gln;
  */
 
 public interface Gln {
-    String HOST = "http://192.168.0.100:5000";
+    String HOST = "http://192.168.1.7:5000";
     String TAG = "GLN";
 }

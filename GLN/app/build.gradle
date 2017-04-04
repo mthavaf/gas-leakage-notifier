@@ -32,6 +32,12 @@ dependencies {
 dependencies {
     compile 'com.loopj.android:android-async-http:1.4.9'
 }
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.android.support:design:23.0.1'
+    compile 'com.googlecode.json-simple:json-simple:1.1'
+}
 repositories {
     maven {
         url "https://repo.eclipse.org/content/repositories/paho-releases/"
@@ -39,6 +45,9 @@ repositories {
 }
 
 
+dependencies {
+    compile 'com.android.support.constraint:constraint-layout:+'
+}
 dependencies {
     compile('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') {
         exclude module: 'support-v4'

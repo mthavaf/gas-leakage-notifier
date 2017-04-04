@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -32,6 +33,7 @@ public class LoggedIn extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_logged_in);
 
         drawerOptionNames = getResources().getStringArray(R.array.drawer_items);
@@ -41,9 +43,10 @@ public class LoggedIn extends AppCompatActivity {
         glnDrawerListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, drawerOptionNames));
         glnDrawerListView.setBackgroundColor(Color.DKGRAY);
         glnDrawerListView.setOnItemClickListener(new DrawerItemClickListener());
-
+        changeFragment(0);
         MqttTask task = new MqttTask();
         task.execute();
+
     }
 
     public class DrawerItemClickListener implements ListView.OnItemClickListener{
@@ -57,7 +60,7 @@ public class LoggedIn extends AppCompatActivity {
         protected Void doInBackground(Void... params) {
 
             String clientId = MqttClient.generateClientId();
-            final MqttAndroidClient client = new MqttAndroidClient(getApplicationContext(), "tcp://broker.hivemq.com:1883", clientId);
+            final MqttAndroidClient client = new MqttAndroidClient(getApplicationContext(), "tcp://iot.eclipse.org:1883", clientId);
             client.setCallback(new MqttCallback() {
                 @Override
                 public void connectionLost(Throwable cause) {
@@ -82,7 +85,8 @@ public class LoggedIn extends AppCompatActivity {
                     @Override
                     public void onSuccess(IMqttToken asyncActionToken) {
                         try {
-                            IMqttToken subToken = client.subscribe("thavaf", 1);
+                            Log.d("GLN", getIntent().getStringExtra("ID"));
+                            IMqttToken subToken = client.subscribe(getIntent().getStringExtra("ID"), 1);
                             subToken.setActionCallback(new IMqttActionListener() {
                                 @Override
                                 public void onSuccess(IMqttToken asyncActionToken) {
@@ -142,5 +146,9 @@ public class LoggedIn extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
+    }
+    public void onSubmit(View v){
+        Snackbar snackbar = Snackbar.make(v, "Yet to be implemented", Snackbar.LENGTH_SHORT);
+        snackbar.show();
     }
 }

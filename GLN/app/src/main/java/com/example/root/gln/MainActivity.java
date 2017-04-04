@@ -1,24 +1,17 @@
 package com.example.root.gln;
 
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
-
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.nispok.snackbar.Snackbar;
-
-import java.io.UnsupportedEncodingException;
-
 import cz.msebera.android.httpclient.Header;
-
 public class MainActivity extends AppCompatActivity {
 
     private Button loginButton;
@@ -43,34 +36,33 @@ public class MainActivity extends AppCompatActivity {
                 email = emailInput.getText().toString().trim();
                 password = passwordInput.getText().toString().trim();
 
-                /*AsyncHttpClient client = new AsyncHttpClient();
-                client.post(Gln.HOST+"/login", new RequestParams("hi","hello"), new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                final android.support.design.widget.Snackbar snackbar = android.support.design.widget.Snackbar.make(v, null, android.support.design.widget.Snackbar.LENGTH_SHORT);
 
-                        try {
-                            print(new String(responseBody, "UTF-8"));
-                        }catch (UnsupportedEncodingException e){
-                            print(e.getMessage());
+                RequestParams params = new RequestParams();
+                params.put("user_name", email);
+                params.put("password", password);
+                AsyncHttpClient client = new AsyncHttpClient();
+                client.post(Gln.HOST + "/login", params, new AsyncHttpResponseHandler()  {
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                org.json.simple.JSONObject jsonResponse = GLNUtils.bytesToJSON(responseBody);
+                                if (jsonResponse.get("response").equals("OK")){
+                                    Intent intent = new Intent(getApplicationContext(), LoggedIn.class);
+                                    intent.putExtra("ID", (String)jsonResponse.get("message"));
+                                    startActivity(intent);
+                                }else {
+                                    snackbar.setText((String)jsonResponse.get("message"));
+                                    snackbar.show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                snackbar.setText("No network connection!!!");
+                                snackbar.show();
+                            }
                         }
-                        Intent loggedIn = new Intent(MainActivity.this, LoggedIn.class);
-                        startActivity(loggedIn);
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        print("Failed");
-                        Intent loggedIn = new Intent(MainActivity.this, LoggedIn.class);
-                        startActivity(loggedIn);
-                    }
-                });*/
-                if (email.equals("thavaf") && password.equals("thavaf")){
-                    Intent i = new Intent(MainActivity.this, LoggedIn.class);
-                    startActivity(i);
-                }else {
-                    android.support.design.widget.Snackbar snackbar = android.support.design.widget.Snackbar.make(v, "Wrong credentials", android.support.design.widget.Snackbar.LENGTH_SHORT);
-                    snackbar.show();
-                }
+                );
             }
         });
 
@@ -85,5 +77,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
+    }
+
+    public void onClickRegister(View v){
+        Intent intent = new Intent(this, ActivityRegister.class);
+        startActivity(intent);
     }
 }

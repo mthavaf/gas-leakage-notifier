@@ -12,4 +12,6 @@
         <item>Emergency Contacts</item>
         <item>Logout</item>
     </string-array>
+    <string name="title_activity_register">Register</string>
+    <string name="unique_id_given">Unique ID given</string>
 </resources>

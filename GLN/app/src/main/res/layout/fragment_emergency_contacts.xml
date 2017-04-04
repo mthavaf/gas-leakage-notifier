@@ -48,5 +48,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="22dp"
         android:id="@+id/phone_numbers_submit_button"
-        tools:ignore="HardcodedText" />
+        tools:ignore="HardcodedText"
+        android:onClick="onSubmit"/>
 </RelativeLayout>
