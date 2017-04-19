@@ -5,7 +5,11 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.IntDef;
 
+import org.eclipse.paho.client.mqttv3.MqttException;
+
 public class MyService extends Service {
+    Thread mqttThread;
+    MqttThread mqttRunnable;
     public MyService() {
 
     }
@@ -23,10 +27,11 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        GLNUtils.print("SERVICE STATRTED" + intent.getStringExtra("ID"));
-
+        //GLNUtils.print("SERVICE STATRTED" + intent.getStringExtra("ID"));
+        GLNUtils.print("SERVICE STARTED");
         try {
-            Thread mqttThread = new Thread(new MqttThread(MyService.this, intent.getStringExtra("ID")));
+            mqttRunnable = new MqttThread(MyService.this.getApplicationContext(), GLNSharedPreferences.getUniqueID(MyService.this));
+            mqttThread = new Thread(mqttRunnable);
             mqttThread.start();
         }catch (Exception e){
             GLNUtils.print(e.getLocalizedMessage());
@@ -38,5 +43,10 @@ public class MyService extends Service {
     @Override
     public void onDestroy() {
         GLNUtils.print("DESTROYED");
+        try {
+            mqttRunnable.getClient().disconnect();
+        }catch (MqttException e){
+            GLNUtils.print(e.getLocalizedMessage());
+        }
     }
 }

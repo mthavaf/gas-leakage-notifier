@@ -1,6 +1,9 @@
 package com.example.root.gln;
 
+import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Vibrator;
+import android.support.v4.app.NotificationCompat;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -19,15 +22,19 @@ public class MqttThread implements Runnable {
     private Context context;
     private String url = "tcp://iot.eclipse.org:1883";
     private String clientID = MqttClient.generateClientId();
-    private MqttAndroidClient client = new MqttAndroidClient(context, url, clientID);
+    private MqttAndroidClient client;
     private String subscribeTopic;
     MqttThread(Context context, String subscribeTopic){
         this.context = context;
         this.subscribeTopic = subscribeTopic;
+        client = new MqttAndroidClient(context, url, clientID);
+    }
+    MqttAndroidClient getClient(){
+        return client;
     }
     @Override
     public void run() {
-        /*client.setCallback(new MqttCallback() {
+        client.setCallback(new MqttCallback() {
             @Override
             public void connectionLost(Throwable cause) {
                 GLNUtils.print("CONNECTION LOST");
@@ -36,6 +43,18 @@ public class MqttThread implements Runnable {
             @Override
             public void messageArrived(String topic, MqttMessage message) throws Exception {
                 GLNUtils.print("Message Arrived : "+message.toString());
+                if (Integer.parseInt(message.toString()) > 500){
+                    try {
+                        android.support.v4.app.NotificationCompat.Builder builder = new android.support.v7.app.NotificationCompat.Builder(context).setSmallIcon(R.mipmap.ic_launcher).setContentTitle("IMPORTANT ALERT").setContentText("LEAKAGE DETECTED: Value = "+ message.toString());
+                        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                        notificationManager.notify(0, builder.build());
+                        vibrator.vibrate(5000);
+
+                    }catch (Exception e){
+                        GLNUtils.print(e.getLocalizedMessage());
+                    }
+                }
             }
 
             @Override
@@ -74,7 +93,9 @@ public class MqttThread implements Runnable {
             });
         }catch (MqttException e){
             GLNUtils.print(e.getLocalizedMessage());
-        }*/
+        }
+/*
         GLNUtils.print("Working");
+*/
     }
 }

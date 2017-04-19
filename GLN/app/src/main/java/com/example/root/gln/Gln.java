@@ -5,6 +5,6 @@ package com.example.root.gln;
  */
 
 public class Gln {
-    static final String HOST = "http://192.168.0.25:5000";
+    static final String HOST = "http://192.168.0.4:5000";
     static final String TAG = "GLN";
 }
