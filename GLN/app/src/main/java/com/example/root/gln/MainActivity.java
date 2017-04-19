@@ -23,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (GLNSharedPreferences.getUserName(MainActivity.this) != null){
+            changeActivity(GLNSharedPreferences.getUniqueID(MainActivity.this));
+        }
         setContentView(R.layout.activity_main);
 
         loginButton = (Button) findViewById(R.id.login_button);
@@ -36,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
                 email = emailInput.getText().toString().trim();
                 password = passwordInput.getText().toString().trim();
 
-                final android.support.design.widget.Snackbar snackbar = android.support.design.widget.Snackbar.make(v, null, android.support.design.widget.Snackbar.LENGTH_SHORT);
+                final android.support.design.widget.Snackbar snackbar = android.support.design.widget.Snackbar.make(v, "", Snackbar.LENGTH_LONG);
 
                 RequestParams params = new RequestParams();
                 params.put("user_name", email);
@@ -47,9 +50,14 @@ public class MainActivity extends AppCompatActivity {
                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                 org.json.simple.JSONObject jsonResponse = GLNUtils.bytesToJSON(responseBody);
                                 if (jsonResponse.get("response").equals("OK")){
-                                    Intent intent = new Intent(getApplicationContext(), LoggedIn.class);
-                                    intent.putExtra("ID", (String)jsonResponse.get("message"));
-                                    startActivity(intent);
+                                    String id = (String)jsonResponse.get("message");
+                                    GLNSharedPreferences.setUserName(MainActivity.this, email);
+                                    GLNSharedPreferences.setUniqueId(MainActivity.this, id);
+                                    Intent intentService = new Intent(MainActivity.this, MyService.class);
+                                    intentService.putExtra("ID", id);
+                                    GLNUtils.print(intentService.getStringExtra("ID"));
+                                    startService(intentService);
+                                    changeActivity(id);
                                 }else {
                                     snackbar.setText((String)jsonResponse.get("message"));
                                     snackbar.show();
@@ -70,6 +78,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    void changeActivity(String id){
+        Intent intent = new Intent(getApplicationContext(), LoggedIn.class);
+        intent.putExtra("ID", id);
+        startActivity(intent);
+    }
     void print(String s){
         Log.d(Gln.TAG, s);
     }

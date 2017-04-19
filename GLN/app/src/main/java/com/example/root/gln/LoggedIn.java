@@ -13,8 +13,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -24,6 +29,8 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+
+import cz.msebera.android.httpclient.Header;
 
 public class LoggedIn extends AppCompatActivity {
     private String[] drawerOptionNames;
@@ -39,9 +46,8 @@ public class LoggedIn extends AppCompatActivity {
         drawerOptionNames = getResources().getStringArray(R.array.drawer_items);
         glnDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         glnDrawerListView = (ListView) findViewById(R.id.left_drawer);
-
         glnDrawerListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, drawerOptionNames));
-        glnDrawerListView.setBackgroundColor(Color.DKGRAY);
+        //glnDrawerListView.setBackgroundColor(Color.DKGRAY);
         glnDrawerListView.setOnItemClickListener(new DrawerItemClickListener());
         changeFragment(0);
         MqttTask task = new MqttTask();
@@ -70,6 +76,10 @@ public class LoggedIn extends AppCompatActivity {
                 @Override
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
                     TextView reportSection = (TextView) findViewById(R.id.report_text);
+                    reportSection.setTextColor(Color.GREEN);
+                    if (Integer.parseInt(message.toString())>500){
+                        reportSection.setTextColor(Color.RED);
+                    }
                     reportSection.setText(message.toString());
                 }
 
@@ -117,6 +127,8 @@ public class LoggedIn extends AppCompatActivity {
     }
     private void changeFragment(int pos){
         if (pos == 2){
+            stopService(new Intent(LoggedIn.this, MyService.class));
+            GLNSharedPreferences.clearPreferences(LoggedIn.this);
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
             return;
@@ -148,7 +160,42 @@ public class LoggedIn extends AppCompatActivity {
 
     }
     public void onSubmit(View v){
-        Snackbar snackbar = Snackbar.make(v, "Yet to be implemented", Snackbar.LENGTH_SHORT);
-        snackbar.show();
+        EditText eTPhoneNumber1 = (EditText) findViewById(R.id.number_1);
+        EditText eTPhoneNumber2 = (EditText) findViewById(R.id.number_2);
+        EditText eTPhoneNumber3 = (EditText) findViewById(R.id.number_3);
+
+        String phoneNumber1 = eTPhoneNumber1.getText().toString().trim();
+        String phoneNumber2 = eTPhoneNumber2.getText().toString().trim();
+        String phoneNumber3 = eTPhoneNumber3.getText().toString().trim();
+
+        RequestParams params = new RequestParams();
+        params.put("unique_id", getIntent().getStringExtra("ID"));
+        params.put("ph_no_1",phoneNumber1);
+        params.put("ph_no_2",phoneNumber2);
+        params.put("ph_no_3",phoneNumber3);
+
+        final android.support.design.widget.Snackbar snackbar = android.support.design.widget.Snackbar.make(v, null, Snackbar.LENGTH_LONG);
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.post(Gln.HOST + "/update-numbers", params, new AsyncHttpResponseHandler()  {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        org.json.simple.JSONObject jsonResponse = GLNUtils.bytesToJSON(responseBody);
+                        Log.d("GLN", jsonResponse.toString());
+                        if (jsonResponse.get("response").equals("OK")){
+                            snackbar.setText((String)jsonResponse.get("message"));
+                            snackbar.show();
+                        }else {
+                            snackbar.setText((String)jsonResponse.get("message"));
+                            snackbar.show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        snackbar.setText("No network connection!!!");
+                        snackbar.show();
+                    }
+                }
+        );
     }
 }
