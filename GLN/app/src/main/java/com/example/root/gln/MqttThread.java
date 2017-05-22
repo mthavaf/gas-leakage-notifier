@@ -43,9 +43,9 @@ public class MqttThread implements Runnable {
             @Override
             public void messageArrived(String topic, MqttMessage message) throws Exception {
                 GLNUtils.print("Message Arrived : "+message.toString());
-                if (message.toString().equals("NOTIFY")){
+                if (Integer.parseInt(message.toString()) == -1){
                     try {
-                        android.support.v4.app.NotificationCompat.Builder builder = new android.support.v7.app.NotificationCompat.Builder(context).setSmallIcon(R.mipmap.ic_launcher).setContentTitle("IMPORTANT ALERT").setContentText("LEAKAGE DETECTED: Value = "+ message.toString());
+                        android.support.v4.app.NotificationCompat.Builder builder = new android.support.v7.app.NotificationCompat.Builder(context).setSmallIcon(R.mipmap.ic_launcher).setContentTitle("IMPORTANT ALERT").setContentText("LEAKAGE DETECTED");
                         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                         Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
                         notificationManager.notify(0, builder.build());
