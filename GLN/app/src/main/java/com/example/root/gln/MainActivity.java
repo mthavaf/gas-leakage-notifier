@@ -41,6 +41,18 @@ public class MainActivity extends AppCompatActivity {
 
                 final android.support.design.widget.Snackbar snackbar = android.support.design.widget.Snackbar.make(v, "", Snackbar.LENGTH_LONG);
 
+                if(!GLNUtils.isUserNameValid(email)){
+                    snackbar.setText("Invalid username format!!!");
+                    snackbar.show();
+                    return;
+                }
+
+                if(!GLNUtils.isPasswordValid(password)){
+                    snackbar.setText("Invalid password format!!!");
+                    snackbar.show();
+                    return;
+                }
+
                 RequestParams params = new RequestParams();
                 params.put("user_name", email);
                 params.put("password", password);

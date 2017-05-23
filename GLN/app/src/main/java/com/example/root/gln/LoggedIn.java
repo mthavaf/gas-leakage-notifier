@@ -168,13 +168,32 @@ public class LoggedIn extends AppCompatActivity {
         String phoneNumber2 = eTPhoneNumber2.getText().toString().trim();
         String phoneNumber3 = eTPhoneNumber3.getText().toString().trim();
 
+        final android.support.design.widget.Snackbar snackbar = android.support.design.widget.Snackbar.make(v, "", Snackbar.LENGTH_LONG);
+
+        if (!GLNUtils.isPhoneNumberValid(phoneNumber1)){
+            snackbar.setText("Invalid Phone Number - 1 format!!!");
+            snackbar.show();
+            return;
+        }
+
+        if (!GLNUtils.isPhoneNumberValid(phoneNumber2)){
+            snackbar.setText("Invalid Phone Number - 2 format!!!");
+            snackbar.show();
+            return;
+        }
+
+        if (!GLNUtils.isPhoneNumberValid(phoneNumber3)){
+            snackbar.setText("Invalid Phone Number - 3 format!!!");
+            snackbar.show();
+            return;
+        }
+
         RequestParams params = new RequestParams();
         params.put("unique_id", getIntent().getStringExtra("ID"));
         params.put("ph_no_1",phoneNumber1);
         params.put("ph_no_2",phoneNumber2);
         params.put("ph_no_3",phoneNumber3);
 
-        final android.support.design.widget.Snackbar snackbar = android.support.design.widget.Snackbar.make(v, null, Snackbar.LENGTH_LONG);
         AsyncHttpClient client = new AsyncHttpClient();
         client.post(Gln.HOST + "/update-numbers", params, new AsyncHttpResponseHandler()  {
                     @Override

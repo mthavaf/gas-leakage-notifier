@@ -53,6 +53,46 @@ public class ActivityRegister extends AppCompatActivity {
 
         final android.support.design.widget.Snackbar snackbar = android.support.design.widget.Snackbar.make(v, null, Snackbar.LENGTH_LONG);
 
+        if(!GLNUtils.isUniqueIDValid(uniqueID)){
+            snackbar.setText("Invalid Unique ID format!!!");
+            snackbar.show();
+            return;
+        }
+
+        if(!GLNUtils.isUserNameValid(username)){
+            snackbar.setText("Invalid username format!!!");
+            snackbar.show();
+            return;
+        }
+
+        if(!GLNUtils.isPasswordValid(password)){
+            snackbar.setText("Invalid password format!!!");
+            snackbar.show();
+            return;
+        }
+
+        if(!GLNUtils.isPhoneNumberValid(primaryNumber)){
+            snackbar.setText("Invalid primary number format!!!");
+            snackbar.show();
+            return;
+        }
+
+        if(!GLNUtils.isPhoneNumberValid(emergencyNumber1)){
+            snackbar.setText("Invalid Emergency number - 1 format!!!");
+            snackbar.show();
+            return;
+        }
+
+        if(!GLNUtils.isPhoneNumberValid(emergencyNumber2)){
+            snackbar.setText("Invalid Emergency number - 2 format!!!");
+            return;
+        }
+
+        if(!GLNUtils.isPhoneNumberValid(emergencyNumber3)){
+            snackbar.setText("Invalid Emergency number - 3 format!!!");
+            return;
+        }
+
         RequestParams params = new RequestParams();
         params.put("unique_id", uniqueID);
         params.put("username", username);
