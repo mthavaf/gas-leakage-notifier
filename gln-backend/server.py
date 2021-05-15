@@ -1,4 +1,4 @@
-from __future__ import  print_function
+from __future__ import print_function
 from flask import Flask, request, Response
 from flaskext.mysql import MySQL
 import json
@@ -28,7 +28,8 @@ def update_numbers():
         number_1 = request.form['ph_no_1']
         number_2 = request.form['ph_no_2']
         number_3 = request.form['ph_no_3']
-        query = "UPDATE details SET ph_no_1 = '%s', ph_no_2 = '%s', ph_no_3 = '%s' WHERE id = '%s'" % (number_1, number_2, number_3, unique_id)
+        query = "UPDATE details SET ph_no_1 = '%s', ph_no_2 = '%s', ph_no_3 = '%s' WHERE id = '%s'" % (
+            number_1, number_2, number_3, unique_id)
 
         if len(number_1) != 13 or len(number_2) != 13 or len(number_3) != 13:
             return json.dumps('{ "response":"error", "message":"Invalid numbers"}')
@@ -65,7 +66,8 @@ def register():
             ph_no_1 = request.form['ph_no_1']
             ph_no_2 = request.form['ph_no_2']
             ph_no_3 = request.form['ph_no_3']
-            query = "INSERT INTO details VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s')" % (unique_id, username, password, ph_no_p, ph_no_1, ph_no_2, ph_no_3)
+            query = "INSERT INTO details VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s')" % (
+                unique_id, username, password, ph_no_p, ph_no_1, ph_no_2, ph_no_3)
             cur.execute(query)
             conn.commit()
             return json.dumps('{ "response":"OK", "message":"Registration success"}')
@@ -82,7 +84,8 @@ def login():
         mysql.init_app(app)
         conn = mysql.connect()
         cur = conn.cursor(pymysql.cursors.DictCursor)
-        query = "SELECT id FROM details WHERE (username = '%s' AND password = '%s')" % (user_name, password)
+        query = "SELECT id FROM details WHERE (username = '%s' AND password = '%s')" % (
+            user_name, password)
         cur.execute(query)
         conn.commit()
         returned_rows = cur.rowcount
@@ -116,7 +119,8 @@ def get_emergency_numbers(unique_id):
         mysql.init_app(app)
         conn = mysql.connect()
         cur = conn.cursor(pymysql.cursors.DictCursor)
-        cur.execute("SELECT ph_no_1, ph_no_2, ph_no_3 FROM details WHERE id = '%s'" % unique_id)
+        cur.execute(
+            "SELECT ph_no_1, ph_no_2, ph_no_3 FROM details WHERE id = '%s'" % unique_id)
         response = json.dumps(cur.fetchone())
         conn.commit()
         cur.close()
@@ -131,7 +135,8 @@ def get_numbers(unique_id):
         mysql.init_app(app)
         conn = mysql.connect()
         cur = conn.cursor(pymysql.cursors.DictCursor)
-        cur.execute("SELECT ph_no_p, ph_no_1, ph_no_2, ph_no_3 FROM details WHERE id = '%s'" % unique_id)
+        cur.execute(
+            "SELECT ph_no_p, ph_no_1, ph_no_2, ph_no_3 FROM details WHERE id = '%s'" % unique_id)
         response = json.dumps(cur.fetchone())
         conn.commit()
         cur.close()
