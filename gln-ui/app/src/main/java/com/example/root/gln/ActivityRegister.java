@@ -2,10 +2,10 @@ package com.example.root.gln;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+
+import com.google.android.material.snackbar.Snackbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -51,7 +51,7 @@ public class ActivityRegister extends AppCompatActivity {
         String emergencyNumber2 = eTemergencyNumber2.getText().toString().trim();
         String emergencyNumber3 = etemergencyNumber3.getText().toString().trim();
 
-        final android.support.design.widget.Snackbar snackbar = android.support.design.widget.Snackbar.make(v, null, Snackbar.LENGTH_LONG);
+        final Snackbar snackbar = Snackbar.make(v, null, Snackbar.LENGTH_LONG);
 
         if(!GLNUtils.isUniqueIDValid(uniqueID)){
             snackbar.setText("Invalid Unique ID format!!!");

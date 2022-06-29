@@ -3,7 +3,7 @@ package com.example.root.gln;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Vibrator;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -45,11 +45,11 @@ public class MqttThread implements Runnable {
                 GLNUtils.print("Message Arrived : "+message.toString());
                 if (Integer.parseInt(message.toString()) == -1){
                     try {
-                        android.support.v4.app.NotificationCompat.Builder builder = new android.support.v7.app.NotificationCompat.Builder(context).setSmallIcon(R.mipmap.ic_launcher).setContentTitle("IMPORTANT ALERT").setContentText("LEAKAGE DETECTED");
-                        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-                        notificationManager.notify(0, builder.build());
-                        vibrator.vibrate(5000);
+//                        androidx.core.app.NotificationCompat.Builder builder = new androidx.appcompat.app.NotificationCompat.Builder(context).setSmallIcon(R.mipmap.ic_launcher).setContentTitle("IMPORTANT ALERT").setContentText("LEAKAGE DETECTED");
+//                        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+//                        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+//                        notificationManager.notify(0, builder.build());
+//                        vibrator.vibrate(5000);
 
                     }catch (Exception e){
                         GLNUtils.print(e.getLocalizedMessage());

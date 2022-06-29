@@ -3,7 +3,7 @@ package com.example.root.gln;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 

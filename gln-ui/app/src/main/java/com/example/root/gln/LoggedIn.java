@@ -4,11 +4,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -168,7 +168,7 @@ public class LoggedIn extends AppCompatActivity {
         String phoneNumber2 = eTPhoneNumber2.getText().toString().trim();
         String phoneNumber3 = eTPhoneNumber3.getText().toString().trim();
 
-        final android.support.design.widget.Snackbar snackbar = android.support.design.widget.Snackbar.make(v, "", Snackbar.LENGTH_LONG);
+        final Snackbar snackbar = Snackbar.make(v, "", Snackbar.LENGTH_LONG);
 
         if (!GLNUtils.isPhoneNumberValid(phoneNumber1)){
             snackbar.setText("Invalid Phone Number - 1 format!!!");

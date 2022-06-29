@@ -1,8 +1,8 @@
 package com.example.root.gln;
 
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
                 email = emailInput.getText().toString().trim();
                 password = passwordInput.getText().toString().trim();
 
-                final android.support.design.widget.Snackbar snackbar = android.support.design.widget.Snackbar.make(v, "", Snackbar.LENGTH_LONG);
+                final Snackbar snackbar = Snackbar.make(v, "", Snackbar.LENGTH_LONG);
 
                 if(!GLNUtils.isUserNameValid(email)){
                     snackbar.setText("Invalid username format!!!");
